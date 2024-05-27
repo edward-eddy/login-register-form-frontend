@@ -1,0 +1,403 @@
+<div class="body">
+  <div class="profile-container">
+    <aside class="sidebar">
+      <nav class="menu">
+        <div>
+          <button
+            class="menu-item active"
+            data-section="personal-info"
+            (click)="pInfoShow()"
+          >
+            البيانات الشخصية
+          </button>
+          <button
+            class="menu-item"
+            data-section="social-links"
+            (click)="cInfoShow()"
+          >
+            روابط التواصل الاجتماعي
+          </button>
+        </div>
+        <div>
+          <button
+            class="menu-item"
+            (click)="logout()"
+          >
+            تسجيل الخروج
+          </button>
+        </div>
+      </nav>
+    </aside>
+    <main class="">
+      <header>
+        <img
+          src="/assets/images/default-avatar-icon-of-social-media-user-vector.jpg"
+          alt=""
+        />
+        <div class="details mx-3 d-flex flex-column">
+          <h4 class="m-1">الصورة الشخصية</h4>
+          <span>صورة بصيغة jpg, jpeg, png, svg بحجم 10 ميجا بايت</span>
+          <button type="button" class="menu-item active">اضافة صورة</button>
+        </div>
+      </header>
+      <div class="container forms">
+        <ng-container *ngIf="isPersonalInfo; else ref">
+          <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+            <section>
+              <button
+                class="header text-end p-3 border-bottom w-100"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#personalInfo"
+                aria-expanded="false"
+                aria-controls="personalInfo"
+              >
+                البيانات الشخصية
+                <i class="fa-solid fa-chevron-down float-start mx-3 mt-1"></i>
+              </button>
+              <div class="collapse show" id="personalInfo">
+                <div class="input_group">
+                  <div class="field">
+                    <label for="firstName">الاسم الأول*</label>
+                    <input
+                      type="text"
+                      id="firstName"
+                      name="firstName"
+                      formControlName="firstName"
+                      placeholder=""
+                      required
+                      [ngClass]="{
+                        'form-control is-invalid': firstName?.touched && firstName?.invalid
+                      }"
+                    />
+                    <span class="invalid-feedback">
+                      <span *ngIf="firstName?.errors?.['required']"
+                        >هذا الحقل اساسي يجب ملؤه</span
+                      >
+                    </span>
+                  </div>
+                  <div class="field">
+                    <label for="lastName">الاسم الاخير*</label>
+                    <input
+                      type="text"
+                      id="lastName"
+                      name="lastName"
+                      formControlName="lastName"
+                      placeholder=""
+                      required
+                      [ngClass]="{
+                        'form-control is-invalid': lname?.touched && lname?.invalid
+                      }"
+                    />
+                    <span class="invalid-feedback">
+                      <span *ngIf="lastName?.errors?.['required']"
+                        >هذا الحقل اساسي يجب ملؤه</span
+                      >
+                    </span>
+                  </div>
+                </div>
+                <div class="input_group">
+                  <div class="field">
+                    <label for="arName"
+                      >الاسم الكامل بالعربية*
+                      <span
+                        >(سيظهر في السيرة الذاتية وبطاقة الاعمال)</span
+                      ></label
+                    >
+                    <input
+                      type="text"
+                      id="arName"
+                      name="arName"
+                      formControlName="arName"
+                      placeholder=""
+                      required
+                      [ngClass]="{
+                        'form-control is-invalid': arName?.touched && arName?.invalid
+                      }"
+                    />
+                    <span class="invalid-feedback">
+                      <span *ngIf="arName?.errors?.['required']"
+                        >هذا الحقل اساسي يجب ملؤه</span
+                      >
+                    </span>
+                  </div>
+                  <div class="field">
+                    <label for="enName"
+                      >الاسم الكامل بالانجليزية*
+                      <span
+                        >(سيظهر في السيرة الذاتية وبطاقة الاعمال)</span
+                      ></label
+                    >
+                    <input
+                      type="text"
+                      id="enName"
+                      name="enName"
+                      formControlName="enName"
+                      placeholder=""
+                      required
+                      [ngClass]="{
+                        'form-control is-invalid': enname?.touched && enname?.invalid
+                      }"
+                    />
+                    <span class="invalid-feedback">
+                      <span *ngIf="enName?.errors?.['required']"
+                        >هذا الحقل اساسي يجب ملؤه</span
+                      >
+                    </span>
+                  </div>
+                </div>
+                <div class="input_group">
+                  <div class="field">
+                    <label for="dob">تاريخ الميلاد*</label>
+                    <input
+                      type="date"
+                      id="dob"
+                      name="dob"
+                      formControlName="dob"
+                      placeholder=""
+                      required
+                      [ngClass]="{
+                        'form-control is-invalid': dob?.touched && dob?.invalid
+                      }"
+                    />
+                    <span class="invalid-feedback">
+                      <span *ngIf="dob?.errors?.['required']"
+                        >هذا الحقل اساسي يجب ملؤه</span
+                      >
+                    </span>
+                  </div>
+                  <div class="field">
+                    <label for="nationality">الجنسية*</label>
+                    <select id="nationality" [ngClass]="{
+                      'form-select is-invalid': nationality?.touched && nationality?.invalid
+                    }">
+                      <option value="" selected disabled>اختر جنسيتك</option>
+                      @for (nationality of nationalities; track $index) {
+                      <option [value]="nationality">
+                        {{ nationality }}
+                      </option>
+                      }
+                    </select>
+                    <span class="invalid-feedback">
+                      <span *ngIf="nationality?.errors?.['required']"
+                        >هذا الحقل اساسي يجب ملؤه</span
+                      >
+                    </span>
+                  </div>
+                </div>
+                <div class="input_group justify-content-start">
+                  <div class="field w-25">
+                    <label for="">النوع*</label>
+                    <div class="d-flex justify-content-evenly">
+                      <input
+                        type="radio"
+                        name="gender"
+                        formControlName="gender"
+                        value="male"
+                        [ngClass]="{
+                          'form-control is-invalid': gender?.touched && gender?.invalid
+                        }"
+                      />
+                      <label for="male"
+                        ><i class="fa-solid fa-child fs-5"></i> ذكر</label
+                      >
+                      <input
+                        type="radio"
+                        name="gender"
+                        formControlName="gender"
+                        value="female"
+                        [ngClass]="{
+                          'form-control is-invalid': gender?.touched && gender?.invalid
+                        }"
+                      />
+                      <label for="female"
+                        ><i class="fa-solid fa-child-dress fs-5"></i>
+                        انثى</label
+                      >
+                    </div>
+
+                    <span class="invalid-feedback">
+                      <span *ngIf="gender?.errors?.['required']"
+                        >هذا الحقل اساسي يجب ملؤه</span
+                      >
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <section>
+              <button
+                class="header text-end p-3 border-bottom w-100"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#addressInfo"
+                aria-expanded="false"
+                aria-controls="addressInfo"
+              >
+                بيانات العنوان
+                <i class="fa-solid fa-chevron-down float-start mx-3 mt-1"></i>
+              </button>
+              <div class="collapse show" id="addressInfo">
+                <div class="input_group">
+                  <div class="field">
+                    <label for="country">الدولة*</label>
+                    <select id="country" (change)="selectCountry($event)">
+                      <option value="" selected disabled>اختر الدولة</option>
+                      @for (country of arabCountries; track $index) {
+                      <option [value]="country">
+                        {{ country }}
+                      </option>
+                      }
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="city">المدينة*</label>
+                    <select id="city">
+                      <option value="" selected disabled>اختر المدينة</option>
+                      @for (city of
+                      arrOfAllCities[arabCountries.indexOf(selectedCountry)];
+                      track $index) {
+                      <option [value]="city">
+                        {{ city }}
+                      </option>
+                      }
+                    </select>
+                  </div>
+                </div>
+                <div class="input_group w-100">
+                  <div class="field w-100">
+                    <label for="fullAddress">العنوان كامل*</label>
+                    <input
+                      type="text"
+                      id="fullAddress"
+                      name="fullAddress"
+                      formControlName="fullAddress"
+                      placeholder=""
+                      required
+                      [ngClass]="{
+                        'form-control is-invalid':
+                          fullAddress?.touched && fullAddress?.invalid
+                      }"
+                    />
+
+                    <span class="invalid-feedback">
+                      <span *ngIf="fullAddress?.errors?.['required']"
+                        >هذا الحقل اساسي يجب ملؤه</span
+                      >
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <section>
+              <button
+                class="header text-end p-3 border-bottom w-100"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#bref"
+                aria-expanded="false"
+                aria-controls="bref"
+              >
+                نبذة عني ( اختياري )
+                <i class="fa-solid fa-chevron-down float-start mx-3 mt-1"></i>
+              </button>
+              <div class="collapse show" id="bref">
+                <div class="input_group w-100">
+                  <div class="field w-100">
+                    <textarea
+                      name="bref"
+                      id="bref"
+                      cols="30"
+                      rows="5"
+                      class="show"
+                      required
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <button
+              type="submit"
+              class="btn btn-success float-start m-3 px-5 py-2"
+            >
+              حفظ
+            </button>
+          </form>
+        </ng-container>
+        <ng-template #ref>
+          <form (ngSubmit)="onSave()">
+            <section>
+              <button
+                class="header text-end p-3 border-bottom w-100"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#SMLinks"
+                aria-expanded="false"
+                aria-controls="SMLinks"
+              >
+                روابط التواصل الاجتماعي
+                <i class="fa-solid fa-chevron-down float-start mx-3 mt-1"></i>
+              </button>
+              <div class="collapse show" id="SMLinks">
+                <div class="input_group w-100">
+                  <div class="w-100">
+                    @for (link of socialMediaKeys; track $index) {
+                    <button
+                      class="btn btn-white border col smButton"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      attr.data-bs-target="{{ '#' + link }}"
+                      aria-expanded="false"
+                      attr.aria-controls="{{ link }}"
+                    >
+                      <i class="fa-solid fa-plus"></i>
+                      {{ link == "other" ? "رابط آخر" : link }}
+                    </button>
+
+                    } @for (link of socialMediaKeys; track $index) {
+                    <div class="col">
+                      <div class="collapse multi-collapse" id="{{ link }}">
+                        <div class="border-top pt-4 card-body">
+                          <h4 class="me-3">
+                            {{ link == "other" ? "رابط آخر" : link }}
+                          </h4>
+                          <div class="input_group">
+                            <div class="field">
+                              <input
+                                type="text"
+                                [id]="link + 'Username'"
+                                [name]="link + 'Username'"
+                                placeholder="اسم المستخدم"
+                                [(ngModel)]="socialMediaLinks[link].username"
+                              />
+                            </div>
+                            <div class="field">
+                              <input
+                                type="text"
+                                [id]="link + 'Link'"
+                                [name]="link + 'Link'"
+                                placeholder="الرابط"
+                                [(ngModel)]="socialMediaLinks[link].link"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    }
+                  </div>
+                </div>
+              </div>
+              <button
+                type="submit"
+                class="btn btn-success float-start m-3 px-5 py-2"
+              >
+                حفظ
+              </button>
+            </section>
+          </form>
+        </ng-template>
+      </div>
+    </main>
+  </div>
+</div>

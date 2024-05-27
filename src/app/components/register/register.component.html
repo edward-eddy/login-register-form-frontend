@@ -1,0 +1,117 @@
+<div class="form-container">
+  <div class="form-card">
+    <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+      <div class="d-flex flex-column flex-wrap align-content-center text-center">
+        <h2>تسجيل جديد</h2>
+        <p>قم بالتسجيل لنتائج بحثية أفضل</p>
+      </div>
+      <div class="input_group">
+        <input type="text" placeholder="الاسم الأول" formControlName="firstName" name="firstName" />
+        <span class="invalid-feedback">
+          <span *ngIf="firstName?.errors?.['required']"
+            >هذا الحقل اساسي يجب ملؤه</span
+          >
+        </span>
+        <input type="text" placeholder="الاسم الأخير" formControlName="lastName" name="lastName" />
+        <span class="invalid-feedback">
+          <span *ngIf="lastName?.errors?.['required']"
+            >هذا الحقل اساسي يجب ملؤه</span
+          >
+        </span>
+      </div>
+      <div class="input_group">
+        <div class="sub">
+          <div class="select-container">
+            <select required>
+              <option value="" disabled selected>اختر</option>
+              <option value="1">Option 1</option>
+              <option value="2">Option 2</option>
+            </select>
+          </div>
+          <input class="mob" type="text" placeholder="رقم الجوال" formControlName="mobile" name="mobile" />
+          <span class="invalid-feedback">
+            <span *ngIf="mobile?.errors?.['required']"
+              >هذا الحقل اساسي يجب ملؤه</span
+            >
+          </span>
+        </div>
+        <input class="" type="email" placeholder="البريد الإلكتروني" formControlName="email" name="email" />
+        <span class="invalid-feedback">
+          <span *ngIf="email?.errors?.['required']"
+            >هذا الحقل اساسي يجب ملؤه</span
+          >
+        </span>
+      </div>
+      <div class="input_group password-fields">
+        <input type="password" placeholder="كلمة المرور" formControlName="password" name="password" />
+        <span class="invalid-feedback">
+          <span *ngIf="password?.errors?.['required']"
+            >هذا الحقل اساسي يجب ملؤه</span
+          >
+        </span>
+        <input type="password" placeholder="تأكيد كلمة المرور" formControlName="confirmPassword" name="confirmPassword" />
+        <span class="invalid-feedback">
+          <span *ngIf="password?.errors?.['required']"
+            >هذا الحقل اساسي يجب ملؤه</span
+          >
+        </span>
+      </div>
+      <div class="terms">
+        <input
+          class="form-check-input mx-3"
+          type="checkbox"
+          id="terms"
+          formControlName="terms" name="terms"
+        />
+        <label class="form-check-label" for="terms"
+          >أوافق على كافة
+          <a class="link-warning" href=""> الشروط والأحكام</a></label
+        >
+        <span class="invalid-feedback">
+          <span *ngIf="terms?.errors?.['required']"
+            >يجب الموافقة على الشروط والاحكام</span
+          >
+        </span>
+      </div>
+      <div class="verification-options form-check mt-3">
+        <p class="">ارسال رمز التحقيق الى </p>
+        <div>
+          <input
+            class="form-check-input mx-3 float-end"
+            type="checkbox"
+            id="emailVerification"
+            value="emailVerification"
+            name="emailVerification"
+            formControlName="emailVerification"
+          />
+          <label class="form-check-label link-warning float-end" for="emailVerification"
+            >البريد الإلكتروني</label
+          >
+          <input
+            class="form-check-input mx-3 float-end"
+            type="checkbox"
+            id="smsVerification"
+            value="smsVerification"
+            name="smsVerification"
+            formControlName="smsVerification"
+          />
+          <label class="form-check-label link-warning float-end" for="smsVerification"
+            >رقم الجوال</label
+          >
+        </div>
+      </div>
+      <div class="d-flex flex-wrap justify-content-center m-4 text-center">
+        <button
+          type="submit"
+          class="register-button btn btn-success btn-lg w-50"
+        >
+          تسجيل
+        </button>
+
+        <p class="login-link col-12 my-3">
+          لديك حساب؟ <a routerLink="/login" class="link-warning">تسجيل الدخول</a>
+        </p>
+      </div>
+    </form>
+  </div>
+</div>

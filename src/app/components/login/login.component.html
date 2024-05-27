@@ -1,0 +1,47 @@
+<div class="form-container">
+  <div class="form-card">
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <div
+        class="d-flex flex-column flex-wrap align-content-center text-center"
+      >
+        <h2>تسجيل الدخول</h2>
+        <p>قم بتسجيل الدخول لنتائج بحثية أفضل</p>
+      </div>
+
+      <div class="input_group input-fields">
+        <input type="text" placeholder="user@gmail.com" formControlName="email" name="email" />
+        <input type="password" placeholder="كلمة المرور" formControlName="password" name="password" />
+      </div>
+      <div class="d-flex justify-content-md-between justify-content-center flex-row-reverse  ">
+
+        <div class="terms mb-2">
+          <input class="form-check-input mx-3" type="checkbox" id="remember"  />
+          <label class="form-check-label" for="terms">تذكرني </label>
+        </div>
+        <a href="">هل نسيت كلمة المرور؟</a>
+      </div>
+
+      <div class="d-flex flex-wrap justify-content-center m-4 text-center">
+        <button
+          type="submit"
+          class="register-button btn btn-success btn-lg w-50"
+        >
+          تسجيل
+        </button>
+        <p class="login-link col-12 my-3">
+          ليس لديك حساب؟ <a routerLink="/register" class="link-warning">تسجيل جديد</a>
+        </p>
+      </div>
+    </form>
+    <hr>
+    <p class="login-link col-12 my-3 text-center">
+      او التسجيل عبر
+    </p>
+    <div>
+      <i class="fa-brands fa-apple"></i>
+      <i class="fa-brands fa-google"></i>
+      <i class="fa-brands fa-facebook"></i>
+      <i class="fa-brands fa-twitter"></i>
+    </div>
+  </div>
+</div>
