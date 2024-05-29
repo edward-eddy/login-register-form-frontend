@@ -1,40 +1,89 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, retry } from 'rxjs';
+import { environment } from '../../environments/environment';
+import { UserLogin } from '../models/user-login';
+import { Router } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class loginAuthService{
-  userLoggedBehavior: BehaviorSubject<boolean>
+export class loginAuthService {
+  userLoggedBehavior: BehaviorSubject<boolean>;
+  httpHeader = {};
 
-  get isUserLogged(): boolean{
-    return (localStorage.getItem("userToken"))? true : false;
+  get isUserLogged(): boolean {
+    let token = this.getToken();
+    return token ? true : false;
   }
 
-  private apiUrl = 'http://localhost:3000/api';
-
-  constructor(private http: HttpClient) {
-    this.userLoggedBehavior =  new BehaviorSubject<boolean>(this.isUserLogged)
+  constructor(private httpClient: HttpClient, private router: Router) {
+    this.userLoggedBehavior = new BehaviorSubject<boolean>(this.isUserLogged);
   }
 
-  register(userData:any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, userData);
+  register(userData: any): Observable<any> {
+    return this.httpClient.post(
+      `${environment.BAseApiURL}/userAuth/register`,
+      userData,
+      this.httpHeader
+    ).pipe(
+      retry(3)
+    )
   }
 
-  sendOtp(email:any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/send-otp`, { email });
+  sendOtp(email: any): Observable<any> {
+    return this.httpClient.post(`${environment.BAseApiURL}/send-otp`, {
+      email,
+    });
   }
 
-  login(loginData: any){
-    let token = "1234567890"
-    localStorage.setItem("userToken", token)
-    this.userLoggedBehavior.next(true)
-    console.log(this.userLoggedBehavior);
-
+  // login(loginData: any){
+  //   let token = "1234567890"
+  //   localStorage.setItem("userToken", token)
+  //   this.userLoggedBehavior.next(true)
+  // }
+  login(loginData: any): Observable<object> {
+    const { email, password } = loginData;
+    return this.httpClient
+      .post(
+        `${environment.BAseApiURL}/userAuth/login`,
+        { email, password },
+        this.httpHeader
+      )
+      .pipe(
+        retry(3)
+        // catchError((err) => {
+        //   return throwError(() => {
+        //     this.userLoggedBehavior.next(true);
+        //     return new Error('Error While Adding user');
+        //   });
+        // })
+      );
   }
-  logout(){
-    localStorage.removeItem("userToken")
-    this.userLoggedBehavior.next(false)
+  setSession(authResult) {
+    sessionStorage.setItem('token', authResult.token);
+  }
+  setCookie(authResult) {
+    const expiryDate = new Date();
+    expiryDate.setSeconds(expiryDate.getSeconds() + authResult.expires_at);
+    document.cookie = `token=${authResult.token};expires=${expiryDate}`;
+  }
+  logout() {
+    let date = new Date();
+    date.setDate(date.getDate() - 1);
+    // case remember me
+    document.cookie = `token=null;expires=${date}`;
+    // normal case
+    sessionStorage.removeItem('token');
+    this.router.navigateByUrl('/login');
+  }
+  getToken() {
+    const sessionToken = sessionStorage.getItem('token');
+    let cookies = document.cookie.split(/[;=]/);
+    let cookiesToken =
+      cookies.indexOf('token') !== -1
+        ? cookies[cookies.indexOf('token') + 1]
+        : null;
+    return sessionToken ? sessionToken : cookiesToken;
   }
 }

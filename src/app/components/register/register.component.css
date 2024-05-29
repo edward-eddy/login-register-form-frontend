@@ -95,7 +95,7 @@ button.register-button.btn.btn-success {
   display: flex;
   flex-wrap: wrap;
 }
-.password-fields input{
+.password-fields input {
   width: 95%;
 }
 @media only screen and (max-width: 768px) {
@@ -119,4 +119,13 @@ button.register-button.btn.btn-success {
     flex-direction: column !important;
     flex-wrap: wrap !important;
   }
+}
+
+.form-control.is-invalid {
+  border: 1px solid #cd0a0a !important;
+  border-radius: 5px !important;
+  /* text-align: left !important; */
+  /* padding: 0 30px 0 -30px !important; */
+  padding-right: 1.7rem !important;
+  padding-left: 0rem !important;
 }

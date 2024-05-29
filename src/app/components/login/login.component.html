@@ -9,13 +9,50 @@
       </div>
 
       <div class="input_group input-fields">
-        <input type="text" placeholder="user@gmail.com" formControlName="email" name="email" />
-        <input type="password" placeholder="كلمة المرور" formControlName="password" name="password" />
+        <input
+          type="text"
+          placeholder="user@gmail.com"
+          formControlName="email"
+          name="email"
+          [ngClass]="{
+            'form-control is-invalid': email?.touched && email?.invalid
+          }"
+        />
       </div>
-      <div class="d-flex justify-content-md-between justify-content-center flex-row-reverse  ">
+      <div class="d-flex justify-content-center">
 
+        <input
+        type=""
+        style="display: none;"
+        [ngClass]="{
+          'form-control is-invalid': email?.touched && email?.invalid
+        }"
+      />
+      <span class="invalid-feedback fw-bold" style="width: fit-content!important;">
+        <span *ngIf="email?.errors?.['required']"
+          >ادخل البريد الالكتروني</span
+        >
+      </span>
+      </div>
+      <div class="input_group input-fields">
+        <input
+          type="password"
+          placeholder="كلمة المرور"
+          formControlName="password"
+          name="password"
+          [ngClass]="{
+            'form-control is-invalid': password?.touched && password?.invalid
+          }"
+        />
+        <span class="invalid-feedback fw-bold" style="width: fit-content!important;">
+          <span *ngIf="password?.errors?.['required']">ادخل كلمة المرور</span>
+        </span>
+      </div>
+      <div
+        class="d-flex justify-content-md-between justify-content-center flex-row-reverse"
+      >
         <div class="terms mb-2">
-          <input class="form-check-input mx-3" type="checkbox" id="remember"  />
+          <input class="form-check-input mx-3" type="checkbox" id="remember" />
           <label class="form-check-label" for="terms">تذكرني </label>
         </div>
         <a href="">هل نسيت كلمة المرور؟</a>
@@ -29,14 +66,13 @@
           تسجيل
         </button>
         <p class="login-link col-12 my-3">
-          ليس لديك حساب؟ <a routerLink="/register" class="link-warning">تسجيل جديد</a>
+          ليس لديك حساب؟
+          <a routerLink="/register" class="link-warning">تسجيل جديد</a>
         </p>
       </div>
     </form>
-    <hr>
-    <p class="login-link col-12 my-3 text-center">
-      او التسجيل عبر
-    </p>
+    <hr />
+    <p class="login-link col-12 my-3 text-center">او التسجيل عبر</p>
     <div>
       <i class="fa-brands fa-apple"></i>
       <i class="fa-brands fa-google"></i>

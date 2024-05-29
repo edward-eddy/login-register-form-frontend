@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { loginAuthService } from '../../services/login-auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -38,42 +39,57 @@ export class RegisterComponent {
     return this.registerForm.get('smsVerification');
   }
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private authService: loginAuthService
-  ) {
+  constructor( private formBuilder: FormBuilder, private authService: loginAuthService, private toastr: ToastrService) {
     this.registerForm = this.formBuilder.group(
       {
         firstName: ['', Validators.required],
         lastName: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
-        mobile: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+        mobile: ['', [Validators.required, Validators.pattern('^[0-9]{11}$')]],
         password: ['', [Validators.required, Validators.minLength(6)]],
-        confirmPassword: ['', Validators.required],
-        terms: ['', Validators.required],
+        confirmPassword: ['', [Validators.required, this.checkPasswords.bind(this)]],
+        terms: [false, Validators.requiredTrue],
         emailVerification: [false],
         smsVerification: [false]
       },
-      { validator: this.checkPasswords }
     );
   }
 
   checkPasswords(group: FormGroup) {
     const password = group.get('password')?.value;
     const confirmPassword = group.get('confirmPassword')?.value;
-
     return password === confirmPassword ? null : { match: true };
   }
 
   onRegister() {
-    if (this.registerForm.valid) {
-      this.authService.register(this.registerForm.value).subscribe(
-        (response) => {
-          console.log('Registration successful', response);
-        },
-        (error) => {
-          console.error('Registration failed', error);
+
+    if (!this.registerForm.valid) {
+      this.registerForm.markAllAsTouched();
+      const keys = Object.keys(this.registerForm.controls);
+      for (let i = 0; i < keys.length; i++) {
+        if (this.registerForm.get(keys[i]).invalid){
+          console.log(this.registerForm.get(keys[i]).touched);
+          this.toastr.error(`${keys[i]} is not valid`, 'Invalid input' );
         }
+      };
+    }
+    if (this.registerForm.valid) {
+      this.authService.register(this.registerForm.value).subscribe({
+        next: (data) => {
+          console.log(data);
+        },
+        error: (err) => {
+          console.log(err.error.error.errors[0].message);
+
+          this.toastr.error(JSON.stringify(err.error.error.errors[0].message), 'Register Error' );
+        },
+      }
+        // (response) => {
+        //   console.log('Registration successful', response);
+        // },
+        // (error) => {
+        //   console.error('Registration failed', error);
+        // }
       );
     }
   }

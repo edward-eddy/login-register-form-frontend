@@ -11,6 +11,8 @@ import { ProfileEditComponent } from './components/profile-edit/profile-edit.com
 import { RegisterComponent } from './components/register/register.component';
 import { loginAuthService } from './services/login-auth.service';
 import { UserService } from './services/user.service';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { ToastrModule, provideToastr } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -24,9 +26,10 @@ import { UserService } from './services/user.service';
     AppRoutingModule,
     ReactiveFormsModule,
     CommonModule,
-    HttpClientModule
+    HttpClientModule,
+    ToastrModule.forRoot(),
   ],
-  providers: [loginAuthService, UserService],
+  providers: [loginAuthService, UserService, provideAnimations(), provideToastr()],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

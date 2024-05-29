@@ -118,12 +118,12 @@ export class ProfileEditComponent implements AfterContentInit {
     return this.profileForm.get('firstName');
   }
   get lastName() {
-    return this.profileForm.get('lname');
+    return this.profileForm.get('lastName');
   }
   get arName() {
     return this.profileForm.get('arName');
   }
-  get enname() {
+  get enName() {
     return this.profileForm.get('enName');
   }
   get dob() {
@@ -131,6 +131,12 @@ export class ProfileEditComponent implements AfterContentInit {
   }
   get nationality() {
     return this.profileForm.get('nationality');
+  }
+  get country() {
+    return this.profileForm.get('country');
+  }
+  get city() {
+    return this.profileForm.get('city');
   }
   get gender() {
     return this.profileForm.get('gender');
@@ -159,6 +165,8 @@ export class ProfileEditComponent implements AfterContentInit {
       ],
       dob: ['', Validators.required],
       nationality: ['', Validators.required],
+      country: ['', Validators.required],
+      city: ['', Validators.required],
       gender: ['', Validators.required],
       fullAddress: ['', Validators.required],
       social: [''],
@@ -172,6 +180,11 @@ export class ProfileEditComponent implements AfterContentInit {
   }
 
   onSubmit() {
+    if (!this.profileForm.valid)
+    this.profileForm.markAllAsTouched();
+    console.log(this.profileForm.get('lastName').valid);
+
+
     if (this.profileForm.valid) {
       this.userService.updateProfile(this.profileForm.value).subscribe(
         (response) => {

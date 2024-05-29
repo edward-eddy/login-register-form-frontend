@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { loginAuthService } from '../../services/login-auth.service';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -22,7 +23,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private authService: loginAuthService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required]],
@@ -30,24 +32,27 @@ export class LoginComponent {
       rememberMe: [false],
     });
   }
+  showSuccess() {
+    this.toastr.success('Hello world!', 'Toastr fun!');
+  }
 
   onLogin() {
+    if (!this.loginForm.valid)
+    this.loginForm.markAllAsTouched();
     if (this.loginForm.valid) {
-      console.log(this.loginForm);
+      this.authService.login(this.loginForm.value).subscribe({
+        next: (data) => {
+          this.loginForm.get('rememberMe').value
+            ? this.authService.setCookie(data)
+            : this.authService.setSession(data);
 
-      this.authService.login(this.loginForm.value);
-      // this.router.navigateByUrl('../')
-      this.router.navigate(['']);
-
-      // this.authService.login(this.loginForm.value).subscribe(
-      //   response => {
-      //     console.log('Login successful', response);
-      //     this.router.navigate(['/profile-edit']);
-      //   },
-      //   error => {
-      //     console.error('Login failed', error);
-      //   }
-      // );
+          this.toastr.success('Welcome to my website');
+          this.router.navigateByUrl('/');
+        },
+        error: (err) => {
+          this.toastr.error(err.error.message, 'Login Error');
+        },
+      });
     }
   }
 }
