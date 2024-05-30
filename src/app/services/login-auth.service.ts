@@ -37,11 +37,6 @@ export class loginAuthService {
     });
   }
 
-  // login(loginData: any){
-  //   let token = "1234567890"
-  //   localStorage.setItem("userToken", token)
-  //   this.userLoggedBehavior.next(true)
-  // }
   login(loginData: any): Observable<object> {
     const { email, password } = loginData;
     return this.httpClient
@@ -52,12 +47,6 @@ export class loginAuthService {
       )
       .pipe(
         retry(3)
-        // catchError((err) => {
-        //   return throwError(() => {
-        //     this.userLoggedBehavior.next(true);
-        //     return new Error('Error While Adding user');
-        //   });
-        // })
       );
   }
   setSession(authResult) {

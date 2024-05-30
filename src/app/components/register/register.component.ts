@@ -68,7 +68,7 @@ export class RegisterComponent {
       const keys = Object.keys(this.registerForm.controls);
       for (let i = 0; i < keys.length; i++) {
         if (this.registerForm.get(keys[i]).invalid){
-          console.log(this.registerForm.get(keys[i]).touched);
+          // console.log(this.registerForm.get(keys[i]).touched);
           this.toastr.error(`${keys[i]} is not valid`, 'Invalid input' );
         }
       };
@@ -76,20 +76,13 @@ export class RegisterComponent {
     if (this.registerForm.valid) {
       this.authService.register(this.registerForm.value).subscribe({
         next: (data) => {
-          console.log(data);
+          // console.log(data);
         },
         error: (err) => {
-          console.log(err.error.error.errors[0].message);
-
+          // console.log(err.error.error.errors[0].message);
           this.toastr.error(JSON.stringify(err.error.error.errors[0].message), 'Register Error' );
         },
       }
-        // (response) => {
-        //   console.log('Registration successful', response);
-        // },
-        // (error) => {
-        //   console.error('Registration failed', error);
-        // }
       );
     }
   }

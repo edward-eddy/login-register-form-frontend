@@ -32,13 +32,18 @@ export class LoginComponent {
       rememberMe: [false],
     });
   }
-  showSuccess() {
-    this.toastr.success('Hello world!', 'Toastr fun!');
-  }
 
   onLogin() {
-    if (!this.loginForm.valid)
-    this.loginForm.markAllAsTouched();
+    if (!this.loginForm.valid) {
+      this.loginForm.markAllAsTouched();
+      const keys = Object.keys(this.loginForm.controls);
+      for (let i = 0; i < keys.length; i++) {
+        if (this.loginForm.get(keys[i]).invalid) {
+          // console.log(this.loginForm.get(keys[i]).touched);
+          this.toastr.error(`${keys[i]} is not valid`, 'Invalid input');
+        }
+      }
+    }
     if (this.loginForm.valid) {
       this.authService.login(this.loginForm.value).subscribe({
         next: (data) => {

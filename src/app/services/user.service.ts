@@ -1,17 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-
-  private apiUrl = 'http://localhost:3000/api';
-
   constructor(private http: HttpClient) { }
 
-  updateProfile(profileData:any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/profile`, profileData);
+  updateProfile(profileData): Observable<any> {
+    return this.http.post(`${environment.BAseApiURL}/userData/updateUserDetails`, {profileData});
+  }
+
+  getUserById(): Observable<any> {
+    return this.http.get(`${environment.BAseApiURL}/userData/getUserById`)
   }
 }

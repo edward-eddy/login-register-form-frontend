@@ -29,6 +29,9 @@
                     <button
                       class="menu-item active"
                       data-section="personal-info"
+                      data-bs-toggle="offcanvas"
+                      aria-controls="offcanvasNavbar"
+                      aria-label="Toggle navigation"
                       (click)="pInfoShow()"
                     >
                       البيانات الشخصية
@@ -36,6 +39,9 @@
                     <button
                       class="menu-item"
                       data-section="social-links"
+                      data-bs-toggle="offcanvas"
+                      aria-controls="offcanvasNavbar"
+                      aria-label="Toggle navigation"
                       (click)="cInfoShow()"
                     >
                       روابط التواصل الاجتماعي
@@ -200,6 +206,8 @@
                     <label for="nationality">الجنسية*</label>
                     <select
                       id="nationality"
+                      name="nationality"
+                      formControlName="nationality"
                       [ngClass]="{
                         'form-select is-invalid':
                           nationality?.touched && nationality?.invalid
@@ -365,11 +373,11 @@
                   <div class="field w-100">
                     <textarea
                       name="bref"
+                      formControlName="bref"
                       id="bref"
                       cols="30"
                       rows="5"
                       class="show"
-                      required
                     ></textarea>
                   </div>
                 </div>

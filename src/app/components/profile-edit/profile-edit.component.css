@@ -1,6 +1,6 @@
 /* styles.css */
 .body {
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   background-color: #f7f7f7;
   direction: rtl;
   text-align: right;
@@ -46,13 +46,10 @@
 }
 
 .menu-item.active {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: #fff;
 }
-main {
-  /* width: 78dvw; */
-  /* overflow-y: auto; */
-}
+
 header {
   display: flex;
   /* flex-direction: row-reverse; */
@@ -80,10 +77,11 @@ header button {
   margin: 5px;
   /* border-radius: 0; */
 }
-form.section button{
+form.section button {
   padding: 10px 40px;
 }
-.forms section ,.forms button.header {
+.forms section,
+.forms button.header {
   background-color: #fff;
   border: 0px;
 }
@@ -124,8 +122,8 @@ form.section button{
 .input_group select {
   padding-right: 21px;
 }
-input[type="radio"]{
-  width: fit-content!important;
+input[type="radio"] {
+  width: fit-content !important;
 }
 ::placeholder {
   color: #888888;
@@ -143,37 +141,37 @@ input[type="radio"]{
   margin: 10px;
 }
 
-.bg-body-tertiary{
+.bg-body-tertiary {
   height: fit-content;
-  position:sticky;
-  top: 0
+  position: sticky;
+  top: 0;
   /* left: 0; */
   /* float: left!important; */
 }
-.body .profile-container .navbar{
+.body .profile-container .navbar {
   top: 0;
 }
-select{
-  padding-right: 20px!important;
+select {
+  padding-right: 20px !important;
 }
 
-@media only screen and (min-width: 768px) {
-  main{
-    width: 78dvw!important;
+@media only screen and (min-width: 767px) {
+  main {
+    width: 78dvw !important;
   }
 }
-@media only screen and (max-width: 768px) {
-  main{
-    width: 100dvw!important;
+@media only screen and (max-width: 767px) {
+  main {
+    width: 100dvw !important;
   }
-  .profile-container{
+  .profile-container {
     display: inline;
   }
-  .navbar{
+  .navbar {
     text-align: right;
     width: fit-content;
   }
-  .sidebar{
+  .sidebar {
     width: 100%;
   }
 }

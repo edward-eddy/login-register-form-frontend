@@ -3,12 +3,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { loginAuthService } from '../../services/login-auth.service';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-profile-edit',
   templateUrl: './profile-edit.component.html',
   styleUrl: './profile-edit.component.css',
 })
-export class ProfileEditComponent implements AfterContentInit {
+export class ProfileEditComponent implements AfterContentInit, OnInit {
   nationalities = [
     'جزائري',
     'بحريني',
@@ -113,6 +114,7 @@ export class ProfileEditComponent implements AfterContentInit {
   isPersonalInfo: boolean = true;
   profileForm: FormGroup;
   currentPage: string = 'personal-info';
+  userFormDetails: any;
 
   get firstName() {
     return this.profileForm.get('firstName');
@@ -147,29 +149,29 @@ export class ProfileEditComponent implements AfterContentInit {
   get social() {
     return this.profileForm.get('social');
   }
+  get bref() {
+    return this.profileForm.get('bref');
+  }
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
     private authService: loginAuthService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {
     this.profileForm = this.fb.group({
-      firstName: ['', Validators.required, Validators.minLength(3)],
-      lastName: ['', Validators.required, Validators.minLength(3)],
-      arName: ['', Validators.required, Validators.minLength(3)],
-      enName: [
-        '',
-        Validators.required,
-        Validators.minLength(3),
-        Validators.pattern(/^([A-Za-z]{3,})(\s[A-Za-z]{3,}){1,}$/),
-      ],
+      firstName: ['', [Validators.required, Validators.minLength(3)]],
+      lastName: ['', [Validators.required, Validators.minLength(3)]],
+      arName: ['', [Validators.required, Validators.minLength(3)]],
+      enName: ['', [Validators.required, Validators.minLength(3)]],
       dob: ['', Validators.required],
       nationality: ['', Validators.required],
       country: ['', Validators.required],
       city: ['', Validators.required],
       gender: ['', Validators.required],
       fullAddress: ['', Validators.required],
-      social: [''],
+      bref: [''],
+      social: [{}],
     });
   }
   selectCountry(country: any) {
@@ -180,20 +182,27 @@ export class ProfileEditComponent implements AfterContentInit {
   }
 
   onSubmit() {
-    if (!this.profileForm.valid)
-    this.profileForm.markAllAsTouched();
-    console.log(this.profileForm.get('lastName').valid);
-
-
-    if (this.profileForm.valid) {
-      this.userService.updateProfile(this.profileForm.value).subscribe(
-        (response) => {
-          console.log('Profile updated successfully', response);
-        },
-        (error) => {
-          console.error('Profile update failed', error);
+    if (!this.profileForm.valid) {
+      this.profileForm.markAllAsTouched();
+      const keys = Object.keys(this.profileForm.controls);
+      for (let i = 0; i < keys.length; i++) {
+        // console.log(keys[i], this.profileForm.get(keys[i]).valid);
+        if (this.profileForm.get(keys[i]).invalid) {
+          this.toastr.error(`${keys[i]} is not valid`, 'Invalid input');
         }
-      );
+      }
+    }
+    if (this.profileForm.valid) {
+      this.userService.updateProfile(this.profileForm.value).subscribe({
+        next: (data) => {
+          this.toastr.success('Profile edited successfully');
+          this.router.navigateByUrl('/');
+        },
+        error: (err) => {
+          // console.log(err);
+          this.toastr.error(err.error.message, 'Error');
+        },
+      });
     }
   }
   onSave() {
@@ -210,6 +219,45 @@ export class ProfileEditComponent implements AfterContentInit {
         menuItems.forEach((i) => i.classList.remove('active'));
         item.classList.add('active');
       });
+    });
+  }
+  ngOnInit(): void {
+    this.userService.getUserById().subscribe({
+      next: ({ data }) => {
+        const {
+          firstName,
+          lastName,
+          arName,
+          enName,
+          dob,
+          nationality,
+          country,
+          city,
+          gender,
+          fullAddress,
+          bref,
+          social,
+        } = data;
+        this.userFormDetails = data;
+        this.profileForm.setValue({
+          firstName,
+          lastName,
+          arName,
+          enName,
+          dob,
+          nationality,
+          country,
+          city,
+          gender,
+          fullAddress,
+          bref,
+          social,
+        });
+        this.selectedCountry = country
+      },
+      error: (err) => {
+        console.log('error ===========>', err);
+      },
     });
   }
   pInfoShow() {
