@@ -296,9 +296,9 @@
                       (change)="selectCountry($event)"
                     >
                       <option value="" selected disabled>اختر الدولة</option>
-                      @for (country of arabCountries; track $index) {
-                      <option [value]="country">
-                        {{ country }}
+                      @for (country of countiesAndCities; track $index) {
+                      <option [value]="country.country">
+                        {{ country.country }}
                       </option>
                       }
                     </select>
@@ -310,15 +310,17 @@
                   </div>
                   <div class="field">
                     <label for="city">المدينة*</label>
-                    <select class="form-select" id="city" formControlName="city"
-                    [ngClass]="{
-                      'form-control is-invalid':
-                      city?.touched && city?.invalid
-                    }">
+                    <select
+                      class="form-select"
+                      id="city"
+                      formControlName="city"
+                      [ngClass]="{
+                        'form-control is-invalid':
+                          city?.touched && city?.invalid
+                      }"
+                    >
                       <option value="" selected disabled>اختر المدينة</option>
-                      @for (city of
-                      arrOfAllCities[arabCountries.indexOf(selectedCountry)];
-                      track $index) {
+                      @for (city of cities; track $index) {
                       <option [value]="city">
                         {{ city }}
                       </option>

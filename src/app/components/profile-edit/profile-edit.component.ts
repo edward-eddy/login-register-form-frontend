@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { loginAuthService } from '../../services/login-auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-profile-edit',
   templateUrl: './profile-edit.component.html',
@@ -34,68 +35,9 @@ export class ProfileEditComponent implements AfterContentInit, OnInit {
     'جيبوتي',
     'جزر القمر',
   ];
-  arabCountries: string[] = [
-    'مصر',
-    'الجزائر',
-    'البحرين',
-    'جزر القمر',
-    'جيبوتي',
-    'العراق',
-    'الأردن',
-    'الكويت',
-    'لبنان',
-    'ليبيا',
-    'المغرب',
-    'موريتانيا',
-    'عمان',
-    'فلسطين',
-    'قطر',
-    'المملكة العربية السعودية',
-    'الصومال',
-    'السودان',
-    'سوريا',
-    'تونس',
-    'اليمن',
-    'الإمارات العربية المتحدة',
-  ];
-  selectedCountry = '';
-  egyptCities: string[] = [
-    'القاهرة',
-    'الإسكندرية',
-    'الجيزة',
-    'السويس',
-    'الأقصر',
-    'أسوان',
-    'شرم الشيخ',
-    'الغردقة',
-    'المنصورة',
-    'طنطا',
-  ];
-  algeriaCities: string[] = [
-    'الجزائر العاصمة',
-    'وهران',
-    'قسنطينة',
-    'عنابة',
-    'باتنة',
-    'البليدة',
-    'سطيف',
-    'تلمسان',
-    'تيزي وزو',
-    'بجاية',
-  ];
-  bahrainCities: string[] = [
-    'المنامة',
-    'المحرق',
-    'الرفاع',
-    'سترة',
-    'عالي',
-    'مدينة عيسى',
-    'مدينة حمد',
-    'الحد',
-    'البديع',
-    'الدراز',
-  ];
-  arrOfAllCities = [this.egyptCities, this.algeriaCities, this.bahrainCities];
+  countiesAndCities = []
+  cities = []
+  selectedCountry: any;
   socialMediaLinks: any = {
     LinkedIn: { username: '', link: '' },
     Github: { username: '', link: '' },
@@ -156,6 +98,7 @@ export class ProfileEditComponent implements AfterContentInit, OnInit {
     private fb: FormBuilder,
     private userService: UserService,
     private authService: loginAuthService,
+    private httpClient: HttpClient,
     private router: Router,
     private toastr: ToastrService
   ) {
@@ -175,7 +118,8 @@ export class ProfileEditComponent implements AfterContentInit, OnInit {
     });
   }
   selectCountry(country: any) {
-    this.selectedCountry = country.target.value;
+    this.selectedCountry = this.countiesAndCities.find(ele => ele.country === country.target.value)
+    this.cities = this.selectedCountry.cities
   }
   switchPage(page: string) {
     this.currentPage = page;
@@ -259,6 +203,13 @@ export class ProfileEditComponent implements AfterContentInit, OnInit {
         console.log('error ===========>', err);
       },
     });
+    this.httpClient.get("https://countriesnow.space/api/v0.1/countries").subscribe({
+      next: (data:any) => {
+        this.countiesAndCities = data.data
+        this.selectedCountry = this.countiesAndCities.find(ele => ele.country === this.selectedCountry)
+        this.cities = this.selectedCountry.cities
+      }
+    })
   }
   pInfoShow() {
     this.isPersonalInfo = true;
