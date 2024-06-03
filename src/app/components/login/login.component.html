@@ -1,5 +1,5 @@
 <div class="form-container">
-  <div class="form-card">
+  <div class="form-card" *ngIf="!toVerify">
     <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
       <div
         class="d-flex flex-column flex-wrap align-content-center text-center"
@@ -71,6 +71,7 @@
         </p>
       </div>
     </form>
+
     <hr />
     <p class="login-link col-12 my-3 text-center">او التسجيل عبر</p>
     <div>
@@ -80,4 +81,5 @@
       <i class="fa-brands fa-twitter"></i>
     </div>
   </div>
+  <app-otp class="w-50" [email]="email"  [password]="password" [rememberMe]="rememberMe" *ngIf="toVerify"></app-otp>
 </div>

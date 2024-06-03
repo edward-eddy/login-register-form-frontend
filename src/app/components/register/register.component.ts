@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class RegisterComponent {
   registerForm: FormGroup;
+  toVerify: boolean = false
 
   get firstName() {
     return this.registerForm.get('firstName');
@@ -76,7 +77,9 @@ export class RegisterComponent {
     if (this.registerForm.valid) {
       this.authService.register(this.registerForm.value).subscribe({
         next: (data) => {
-          // console.log(data);
+          this.toastr.success(data.message)
+          this.toVerify = true
+          console.log(data);
         },
         error: (err) => {
           // console.log(err.error.error.errors[0].message);

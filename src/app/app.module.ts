@@ -19,6 +19,8 @@ import { UserService } from './services/user.service';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { ToastrModule, provideToastr } from 'ngx-toastr';
 import { tokenHeaderInterceptor } from './token-headder.interceptor';
+import { SideNavComponent } from './components/side-nav/side-nav.component';
+import { OtpComponent } from './components/otp/otp.component';
 
 
 @NgModule({
@@ -27,6 +29,8 @@ import { tokenHeaderInterceptor } from './token-headder.interceptor';
     LoginComponent,
     ProfileEditComponent,
     RegisterComponent,
+    SideNavComponent,
+    OtpComponent
   ],
   imports: [
     BrowserModule,

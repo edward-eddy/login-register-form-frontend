@@ -1,7 +1,7 @@
 import { CanActivateFn, Router } from '@angular/router';
-import { loginAuthService } from './services/login-auth.service';
 import { inject } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { loginAuthService } from '../services/login-auth.service';
 
 export const loginGuard: CanActivateFn = (route, state) => {
   const userService = inject(loginAuthService);

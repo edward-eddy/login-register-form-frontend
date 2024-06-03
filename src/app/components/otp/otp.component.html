@@ -1,0 +1,15 @@
+<div class="form-container p-3 mb-5 rounded">
+  <div class="form-card text-center">
+    <label for="otp">Enter your OTP</label>
+    <div class="input_group input-fields d-flex">
+        <input
+          type="text"
+          name="otp"
+          id="otp"
+          [(ngModel)]="otp"
+        />
+        <button class="register-button btn btn-success" (click)="verifyOtp()">Enter</button>
+      </div>
+      <button class="btn text-light" (click)="sendOtp()"><u>If you didn't an OTP click here</u></button>
+  </div>
+</div>

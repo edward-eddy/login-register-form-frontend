@@ -1,63 +1,9 @@
 <div class="body">
   <div class="profile-container">
     <div class="bg-body-tertiary">
-      <nav class="navbar navbar-expand-md">
-        <div
-          class="container-fluid"
-          style="display: inline !important; width: fit-content"
-        >
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#offcanvasNavbar"
-            aria-controls="offcanvasNavbar"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div
-            class="offcanvas offcanvas-end"
-            tabindex="-1"
-            id="offcanvasNavbar"
-            aria-labelledby="offcanvasNavbarLabel"
-          >
-            <div class="offcanvas-body">
-              <aside class="sidebar">
-                <nav class="menu">
-                  <div>
-                    <button
-                      class="menu-item active"
-                      data-section="personal-info"
-                      data-bs-toggle="offcanvas"
-                      aria-controls="offcanvasNavbar"
-                      aria-label="Toggle navigation"
-                      (click)="pInfoShow()"
-                    >
-                      البيانات الشخصية
-                    </button>
-                    <button
-                      class="menu-item"
-                      data-section="social-links"
-                      data-bs-toggle="offcanvas"
-                      aria-controls="offcanvasNavbar"
-                      aria-label="Toggle navigation"
-                      (click)="cInfoShow()"
-                    >
-                      روابط التواصل الاجتماعي
-                    </button>
-                  </div>
-                  <div>
-                    <button class="menu-item" (click)="logout()">
-                      تسجيل الخروج
-                    </button>
-                  </div>
-                </nav>
-              </aside>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <app-side-nav
+        (perAndConInfoEvent)="perAndConInfoShow($event)"
+      ></app-side-nav>
     </div>
 
     <main class="">
@@ -69,7 +15,7 @@
         <div class="details mx-3 d-flex flex-column">
           <h4 class="m-1">الصورة الشخصية</h4>
           <span>صورة بصيغة jpg, jpeg, png, svg بحجم 10 ميجا بايت</span>
-          <button type="button" class="menu-item active">اضافة صورة</button>
+          <button type="button" class="addImg active">اضافة صورة</button>
         </div>
       </header>
       <div class="container-md forms">
@@ -205,11 +151,12 @@
                   <div class="field">
                     <label for="nationality">الجنسية*</label>
                     <select
+                      class="form-select"
                       id="nationality"
                       name="nationality"
                       formControlName="nationality"
                       [ngClass]="{
-                        'form-select is-invalid':
+                        'is-invalid':
                           nationality?.touched && nationality?.invalid
                       }"
                     >
@@ -290,8 +237,7 @@
                       id="country"
                       formControlName="country"
                       [ngClass]="{
-                        'form-control is-invalid':
-                          country?.touched && country?.invalid
+                        'is-invalid': country?.touched && country?.invalid
                       }"
                       (change)="selectCountry($event)"
                     >
@@ -315,8 +261,7 @@
                       id="city"
                       formControlName="city"
                       [ngClass]="{
-                        'form-control is-invalid':
-                          city?.touched && city?.invalid
+                        'is-invalid': city?.touched && city?.invalid
                       }"
                     >
                       <option value="" selected disabled>اختر المدينة</option>
@@ -412,14 +357,27 @@
                   <div class="w-100">
                     @for (link of socialMediaKeys; track $index) {
                     <button
-                      class="btn btn-white border col smButton"
+                      class="btn btn-white col smButton"
                       type="button"
                       data-bs-toggle="collapse"
                       attr.data-bs-target="{{ '#' + link }}"
                       aria-expanded="false"
                       attr.aria-controls="{{ link }}"
+                      [ngClass]="
+                        socialMediaLinks[link].username !== '' &&
+                        socialMediaLinks[link].link !== ''
+                          ? 'border-success-subtle text-success fw-semibold border-2'
+                          : 'border'
+                      "
                     >
+                      @if(socialMediaLinks[link].username !== "" &&
+                      socialMediaLinks[link].link !== ""){
+                      <i class="fa-solid fa-check" #check></i>
+                      } @else {
                       <i class="fa-solid fa-plus"></i>
+
+                      }
+
                       {{ link == "other" ? "رابط آخر" : link }}
                     </button>
 

@@ -14,7 +14,7 @@
   min-height: 100vh;
   justify-content: space-between;
 }
-
+/*
 .sidebar {
   width: 22dvw;
   background-color: #fff;
@@ -31,9 +31,9 @@
 .menu {
   width: 100%;
   margin-top: 20px;
-}
+} */
 
-.menu-item {
+.addImg {
   width: 100%;
   padding: 10px 20px;
   background-color: #f7f7f7;
@@ -45,7 +45,7 @@
   border-radius: 4px;
 }
 
-.menu-item.active {
+.addImg.active {
   background-color: #4caf50;
   color: #fff;
 }
@@ -120,7 +120,10 @@ form.section button {
   width: 100%;
 }
 .input_group select {
-  padding-right: 21px;
+  padding-right: 30px;
+}
+.form-select {
+  background-position: left .75rem center;
 }
 input[type="radio"] {
   width: fit-content !important;
@@ -151,9 +154,9 @@ input[type="radio"] {
 .body .profile-container .navbar {
   top: 0;
 }
-select {
+/* select {
   padding-right: 20px !important;
-}
+} */
 
 @media only screen and (min-width: 767px) {
   main {

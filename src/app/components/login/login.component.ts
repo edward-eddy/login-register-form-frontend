@@ -10,7 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class LoginComponent {
   loginForm: FormGroup;
-
+  toVerify: boolean = false
   get email() {
     return this.loginForm.get('email');
   }
@@ -27,7 +27,7 @@ export class LoginComponent {
     private toastr: ToastrService
   ) {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required]],
+      email: ['eddysameh@gmail.com', [Validators.required]],
       password: ['', Validators.required],
       rememberMe: [false],
     });
@@ -47,6 +47,7 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.authService.login(this.loginForm.value).subscribe({
         next: (data) => {
+
           this.loginForm.get('rememberMe').value
             ? this.authService.setCookie(data)
             : this.authService.setSession(data);
@@ -55,6 +56,10 @@ export class LoginComponent {
           this.router.navigateByUrl('/');
         },
         error: (err) => {
+          if(err.error.message === "Please enter your OTP to verify your account.\nYou can find it in your mail inbox"){
+            this.toVerify = true
+            this.toastr.error(err.error.message, 'Login Error');
+          }
           this.toastr.error(err.error.message, 'Login Error');
         },
       });

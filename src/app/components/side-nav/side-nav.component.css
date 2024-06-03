@@ -1,0 +1,55 @@
+.sidebar {
+  width: 22dvw;
+  background-color: #fff;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  height: 100dvh;
+  position: sticky;
+  top: 0;
+}
+
+.menu {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.menu-item {
+  width: 100%;
+  padding: 10px 20px;
+  background-color: #f7f7f7;
+  color: #000000;
+  border: none;
+  text-align: right;
+  cursor: pointer;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+.menu-item.active {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+@media only screen and (min-width: 767px) {
+  main {
+    width: 78dvw !important;
+  }
+}
+@media only screen and (max-width: 767px) {
+  main {
+    width: 100dvw !important;
+  }
+  .profile-container {
+    display: inline;
+  }
+  .navbar {
+    text-align: right;
+    width: fit-content;
+  }
+  .sidebar {
+    width: 100%;
+  }
+}

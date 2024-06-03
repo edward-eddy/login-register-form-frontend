@@ -1,0 +1,47 @@
+a,
+div,
+input,
+select {
+  box-sizing: border-box;
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+  font-family: "Cairo", sans-serif;
+  font-weight: 550;
+}
+.form-container {
+  font-size: large;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid gainsboro;
+  border-radius: 2rem;
+  background-color: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+  width: 100%;
+  min-height: 45dvh;
+}
+.form-card {
+  width: 75%;
+}
+.input_group button,
+.input_group input,
+.input_group select {
+  background-color: rgba(215, 215, 215, 0.5);
+  color: #ffffff;
+  padding: 12px;
+  margin: 0.5rem 0;
+  border: 1px solid rgb(236, 236, 236);
+  border-radius: 6px;
+  width: 100%;
+}
+::-ms-input-placeholder {
+  /* Edge 12 -18 */
+  color: #fff;
+  font-weight: 550;
+}
+button.register-button.btn.btn-success {
+  margin-left: 5px;
+  padding: 0px 30px;
+  width: fit-content;
+  filter: brightness(120%);
+}

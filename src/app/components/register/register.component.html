@@ -1,5 +1,5 @@
 <div class="form-container">
-  <div class="form-card">
+  <div class="form-card" *ngIf="!toVerify">
     <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
       <div
         class="d-flex flex-column flex-wrap align-content-center text-center"
@@ -142,4 +142,5 @@
       </div>
     </form>
   </div>
+  <app-otp class="w-50" [email]="email" [password]="password" [rememberMe]="rememberMe" *ngIf="toVerify"></app-otp>
 </div>

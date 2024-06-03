@@ -10,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './profile-edit.component.html',
   styleUrl: './profile-edit.component.css',
 })
-export class ProfileEditComponent implements AfterContentInit, OnInit {
+export class ProfileEditComponent implements OnInit {
   nationalities = [
     'جزائري',
     'بحريني',
@@ -35,8 +35,8 @@ export class ProfileEditComponent implements AfterContentInit, OnInit {
     'جيبوتي',
     'جزر القمر',
   ];
-  countiesAndCities = []
-  cities = []
+  countiesAndCities = [];
+  cities = [];
   selectedCountry: any;
   socialMediaLinks: any = {
     LinkedIn: { username: '', link: '' },
@@ -97,7 +97,6 @@ export class ProfileEditComponent implements AfterContentInit, OnInit {
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-    private authService: loginAuthService,
     private httpClient: HttpClient,
     private router: Router,
     private toastr: ToastrService
@@ -118,8 +117,10 @@ export class ProfileEditComponent implements AfterContentInit, OnInit {
     });
   }
   selectCountry(country: any) {
-    this.selectedCountry = this.countiesAndCities.find(ele => ele.country === country.target.value)
-    this.cities = this.selectedCountry.cities
+    this.selectedCountry = this.countiesAndCities.find(
+      (ele) => ele.country === country.target.value
+    );
+    this.cities = this.selectedCountry.cities;
   }
   switchPage(page: string) {
     this.currentPage = page;
@@ -150,21 +151,11 @@ export class ProfileEditComponent implements AfterContentInit, OnInit {
     }
   }
   onSave() {
-    console.log(JSON.stringify(this.socialMediaLinks));
-    // this.profileForm.setValue({
-    //   social: JSON.stringify(this.socialMediaLinks)
-    // })
-    console.log(JSON.stringify(this.profileForm));
+    this.social.setValue(this.socialMediaLinks);
+    this.onSubmit();
+    console.log(JSON.stringify(this.profileForm.value));
   }
-  ngAfterContentInit(): void {
-    const menuItems = document.querySelectorAll('.menu-item');
-    menuItems.forEach((item) => {
-      item.addEventListener('click', () => {
-        menuItems.forEach((i) => i.classList.remove('active'));
-        item.classList.add('active');
-      });
-    });
-  }
+
   ngOnInit(): void {
     this.userService.getUserById().subscribe({
       next: ({ data }) => {
@@ -183,6 +174,7 @@ export class ProfileEditComponent implements AfterContentInit, OnInit {
           social,
         } = data;
         this.userFormDetails = data;
+        this.socialMediaLinks = social
         this.profileForm.setValue({
           firstName,
           lastName,
@@ -197,28 +189,26 @@ export class ProfileEditComponent implements AfterContentInit, OnInit {
           bref,
           social,
         });
-        this.selectedCountry = country
+        this.selectedCountry = country;
+        // countries api fetch
+        this.httpClient
+          .get('https://countriesnow.space/api/v0.1/countries')
+          .subscribe({
+            next: (data: any) => {
+              this.countiesAndCities = data.data;
+              this.selectedCountry = this.countiesAndCities.find(
+                (ele) => ele.country === country
+              );
+              this.cities = this.selectedCountry.cities
+            },
+          });
       },
       error: (err) => {
         console.log('error ===========>', err);
       },
     });
-    this.httpClient.get("https://countriesnow.space/api/v0.1/countries").subscribe({
-      next: (data:any) => {
-        this.countiesAndCities = data.data
-        this.selectedCountry = this.countiesAndCities.find(ele => ele.country === this.selectedCountry)
-        this.cities = this.selectedCountry.cities
-      }
-    })
   }
-  pInfoShow() {
-    this.isPersonalInfo = true;
-  }
-  cInfoShow() {
-    this.isPersonalInfo = false;
-  }
-  logout() {
-    this.authService.logout();
-    this.router.navigate(['/login']);
+  perAndConInfoShow(isPersonalInfo) {
+    this.isPersonalInfo = isPersonalInfo;
   }
 }
