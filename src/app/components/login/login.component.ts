@@ -27,10 +27,24 @@ export class LoginComponent {
     private toastr: ToastrService
   ) {
     this.loginForm = this.fb.group({
-      email: ['eddysameh@gmail.com', [Validators.required]],
+      email: ['', [Validators.required]],
       password: ['', Validators.required],
       rememberMe: [false],
     });
+  }
+
+  sendOtp() {
+    this.authService.sendOtp(this.email.value)
+      .subscribe({
+        next: (response: { message: string }) => {
+          // console.log('sendOtp next', response);
+          this.toastr.success(response.message, 'Thank You');
+        },
+        error: (error: { message }) => {
+          // console.log(error.message);
+          this.toastr.error(error.message);
+        },
+      });
   }
 
   onLogin() {
@@ -57,8 +71,9 @@ export class LoginComponent {
         },
         error: (err) => {
           if(err.error.message === "Please enter your OTP to verify your account.\nYou can find it in your mail inbox"){
+            this.sendOtp()
             this.toVerify = true
-            this.toastr.error(err.error.message, 'Login Error');
+            // this.toastr.error(err.error.message, 'Login Error');
           }
           this.toastr.error(err.error.message, 'Login Error');
         },

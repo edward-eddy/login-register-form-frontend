@@ -32,9 +32,10 @@ export class loginAuthService {
   }
 
   sendOtp(email: any): Observable<any> {
-    return this.httpClient.post(`${environment.BAseApiURL}/send-otp`, {
-      email,
-    });
+    return this.httpClient
+      .post(`${environment.BAseApiURL}/userAuth/sendOtp`, {
+        email,
+      })
   }
 
   login(loginData: any): Observable<object> {

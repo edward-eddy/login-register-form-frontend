@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { loginAuthService } from '../../services/login-auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -40,7 +41,7 @@ export class RegisterComponent {
     return this.registerForm.get('smsVerification');
   }
 
-  constructor( private formBuilder: FormBuilder, private authService: loginAuthService, private toastr: ToastrService) {
+  constructor( private formBuilder: FormBuilder, private authService: loginAuthService, private toastr: ToastrService, private router: Router) {
     this.registerForm = this.formBuilder.group(
       {
         firstName: ['', Validators.required],
@@ -78,11 +79,12 @@ export class RegisterComponent {
       this.authService.register(this.registerForm.value).subscribe({
         next: (data) => {
           this.toastr.success(data.message)
-          this.toVerify = true
-          console.log(data);
+          this.router.navigateByUrl("/login")
+          // this.toVerify = true
+          // console.log(data);
         },
         error: (err) => {
-          // console.log(err.error.error.errors[0].message);
+          console.log(err.message);
           this.toastr.error(JSON.stringify(err.error.error.errors[0].message), 'Register Error' );
         },
       }

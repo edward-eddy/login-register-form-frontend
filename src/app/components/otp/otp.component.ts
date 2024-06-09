@@ -21,8 +21,6 @@ export class OtpComponent {
   @Input() rememberMe;
 
   verifyOtp() {
-    console.log(this.email.value, this.email);
-
     this.http
       .post(`${environment.BAseApiURL}/userAuth/verifyOtp`, {
         otp: this.otp,
@@ -30,13 +28,12 @@ export class OtpComponent {
       })
       .subscribe({
         next: (response: { message: string }) => {
-          // console.log('verifyOtp next', response);
           this.toastr.success(response.message, 'Thank You');
           this.authService
             .login({ email: this.email.value, password: this.password.value })
             .subscribe({
               next: (data) => {
-                this.rememberMe.value
+                this.rememberMe?.value
                   ? this.authService.setCookie(data)
                   : this.authService.setSession(data);
                 this.router.navigateByUrl('/');
@@ -53,18 +50,14 @@ export class OtpComponent {
       });
   }
   sendOtp() {
-    this.http
-      .post(`${environment.BAseApiURL}/userAuth/sendOtp`, {
-        email: this.email.value,
-      })
+    this.authService.sendOtp(this.email.value)
       .subscribe({
         next: (response: { message: string }) => {
-          console.log('sendOtp next', response);
+          // console.log('sendOtp next', response);
           this.toastr.success(response.message, 'Thank You');
         },
         error: (error: { message }) => {
-          console.log(error.message);
-
+          // console.log(error.message);
           this.toastr.error(error.message);
         },
       });
