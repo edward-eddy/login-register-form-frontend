@@ -19,4 +19,8 @@ export class UserService {
   getUserById(): Observable<any> {
     return this.http.get(`${environment.BAseApiURL}/userData/getUserById`);
   }
+
+  getCountries(): Observable<any> {
+    return this.http.get("./assets/countries.json");
+}
 }

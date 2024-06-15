@@ -61,7 +61,6 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.authService.login(this.loginForm.value).subscribe({
         next: (data) => {
-
           this.loginForm.get('rememberMe').value
             ? this.authService.setCookie(data)
             : this.authService.setSession(data);
@@ -70,12 +69,16 @@ export class LoginComponent {
           this.router.navigateByUrl('/');
         },
         error: (err) => {
-          if(err.error.message === "Please enter your OTP to verify your account.\nYou can find it in your mail inbox"){
-            this.sendOtp()
-            this.toVerify = true
+          if (
+            err.error.message ===
+            'Please enter your OTP to verify your account.\nYou can find it in your mail inbox'
+          ) {
+            this.sendOtp();
+            this.toVerify = true;
             // this.toastr.error(err.error.message, 'Login Error');
+          } else {
+            this.toastr.error(err.error.message, 'Login Error');
           }
-          this.toastr.error(err.error.message, 'Login Error');
         },
       });
     }

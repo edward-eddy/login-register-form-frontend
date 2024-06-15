@@ -1,10 +1,10 @@
-import { AfterContentInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
-import { loginAuthService } from '../../services/login-auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
+
 @Component({
   selector: 'app-profile-edit',
   templateUrl: './profile-edit.component.html',
@@ -55,7 +55,7 @@ export class ProfileEditComponent implements OnInit {
   socialMediaKeys = Object.keys(this.socialMediaLinks);
   isPersonalInfo: boolean = true;
   profileForm: FormGroup;
-  currentPage: string = 'personal-info';
+  // currentPage: string = 'personal-info';
   userFormDetails: any;
 
   get firstName() {
@@ -101,6 +101,12 @@ export class ProfileEditComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService
   ) {
+    this.userService.getCountries().subscribe({
+      next: (data)=>{
+        this.countiesAndCities = data.data;
+      }
+    })
+
     this.profileForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.minLength(3)]],
       lastName: ['', [Validators.required, Validators.minLength(3)]],
@@ -122,16 +128,15 @@ export class ProfileEditComponent implements OnInit {
     );
     this.cities = this.selectedCountry.cities;
   }
-  switchPage(page: string) {
-    this.currentPage = page;
-  }
+  // switchPage(page: string) {
+  //   this.currentPage = page;
+  // }
 
   onSubmit() {
     if (!this.profileForm.valid) {
       this.profileForm.markAllAsTouched();
       const keys = Object.keys(this.profileForm.controls);
       for (let i = 0; i < keys.length; i++) {
-        // console.log(keys[i], this.profileForm.get(keys[i]).valid);
         if (this.profileForm.get(keys[i]).invalid) {
           this.toastr.error(`${keys[i]} is not valid`, 'Invalid input');
         }
@@ -153,10 +158,17 @@ export class ProfileEditComponent implements OnInit {
   onSave() {
     this.social.setValue(this.socialMediaLinks);
     this.onSubmit();
-    console.log(JSON.stringify(this.profileForm.value));
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
+    // fetching countries from api
+    // await this.httpClient
+    //   .get('https://countriesnow.space/api/v0.1/countries')
+    //   .subscribe({
+    //     next: (data: any) => {
+    //       this.countiesAndCities = data.data;
+    //     },
+    //   });
     this.userService.getUserById().subscribe({
       next: ({ data }) => {
         const {
@@ -174,7 +186,7 @@ export class ProfileEditComponent implements OnInit {
           social,
         } = data;
         this.userFormDetails = data;
-        this.socialMediaLinks = social
+        this.socialMediaLinks = social;
         this.profileForm.setValue({
           firstName,
           lastName,
@@ -190,18 +202,11 @@ export class ProfileEditComponent implements OnInit {
           social,
         });
         this.selectedCountry = country;
-        // countries api fetch
-        this.httpClient
-          .get('https://countriesnow.space/api/v0.1/countries')
-          .subscribe({
-            next: (data: any) => {
-              this.countiesAndCities = data.data;
-              this.selectedCountry = this.countiesAndCities.find(
-                (ele) => ele.country === country
-              );
-              this.cities = this.selectedCountry.cities
-            },
-          });
+        // assign countries to the variables
+        this.selectedCountry = this.countiesAndCities.find(
+          (ele) => ele.country === country
+        );
+        this.cities = this.selectedCountry.cities;
       },
       error: (err) => {
         console.log('error ===========>', err);
