@@ -7,9 +7,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import {
   HTTP_INTERCEPTORS,
-  HttpClientModule,
   provideHttpClient,
   withFetch,
+  withInterceptorsFromDi,
 } from '@angular/common/http';
 import { LoginComponent } from './components/login/login.component';
 import { ProfileEditComponent } from './components/profile-edit/profile-edit.component';
@@ -22,7 +22,6 @@ import { tokenHeaderInterceptor } from './token-headder.interceptor';
 import { SideNavComponent } from './components/side-nav/side-nav.component';
 import { OtpComponent } from './components/otp/otp.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,7 +29,7 @@ import { OtpComponent } from './components/otp/otp.component';
     ProfileEditComponent,
     RegisterComponent,
     SideNavComponent,
-    OtpComponent
+    OtpComponent,
   ],
   imports: [
     BrowserModule,
@@ -38,7 +37,6 @@ import { OtpComponent } from './components/otp/otp.component';
     ReactiveFormsModule,
     FormsModule,
     CommonModule,
-    HttpClientModule,
     ToastrModule.forRoot(),
   ],
   providers: [
@@ -52,6 +50,8 @@ import { OtpComponent } from './components/otp/otp.component';
       useClass: tokenHeaderInterceptor,
       multi: true,
     },
+    provideHttpClient(withInterceptorsFromDi()),
+
   ],
   bootstrap: [AppComponent],
 })

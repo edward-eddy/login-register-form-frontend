@@ -1,11 +1,6 @@
 // import { HttpInterceptorFn } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest,
-  HttpResponse
-} from '@angular/common/http';
+import { HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { tap } from 'rxjs';
 import { loginAuthService } from './services/login-auth.service';
 
